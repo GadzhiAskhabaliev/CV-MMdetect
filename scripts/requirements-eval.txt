@@ -1,0 +1,3 @@
+# For scripts/eval_coco_predictions.py (same stack as typical MMDet / pycocotools env).
+numpy>=1.20
+pycocotools>=2.0

@@ -33,7 +33,15 @@ from collections import defaultdict
 from pathlib import Path
 from typing import Any
 
-import numpy as np
+try:
+    import numpy as np
+except ModuleNotFoundError as e:  # pragma: no cover
+    raise SystemExit(
+        "eval_coco_predictions.py needs numpy (and pycocotools). Examples:\n"
+        "  source /workspace/venv-mmlab/bin/activate   # then re-run\n"
+        "  /workspace/venv-mmlab/bin/python3 .../eval_coco_predictions.py ...\n"
+        "  pip install -r scripts/requirements-eval.txt\n"
+    ) from e
 
 
 def _xywh_to_xyxy(b: list[float] | tuple[float, ...]) -> tuple[float, float, float, float]:

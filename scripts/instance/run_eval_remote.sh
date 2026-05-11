@@ -5,6 +5,10 @@ set -euo pipefail
 #   export VAL_JSON=... OUT_DIR=...
 #   bash scripts/instance/run_eval_remote.sh /abs/dt.json tag
 #
+# Uses PYTHON (default: python3). On Vast, activate venv or set e.g.
+#   export PYTHON=/workspace/venv-mmlab/bin/python3
+# This script auto-picks that path if it exists and PYTHON is unset.
+#
 # Optional: EVAL_PY=/path/to/other/eval_coco_predictions.py
 # DT JSON: list of {image_id, category_id, bbox [xywh], score} or {"annotations":[...]}.
 
@@ -42,6 +46,10 @@ ARGS=(
 
 ARGS+=(--greedy-iou-thrs "${GREEDY_IOU_THRS:-0.25,0.5,0.75}" --coco-pr-recall "${COCO_PR_RECALL:-0.5}")
 
-python3 "$EVAL_PY" "${ARGS[@]}"
+if [[ -z "${PYTHON:-}" ]] && [[ -x /workspace/venv-mmlab/bin/python3 ]]; then
+  PYTHON=/workspace/venv-mmlab/bin/python3
+fi
+PYTHON="${PYTHON:-python3}"
+"$PYTHON" "$EVAL_PY" "${ARGS[@]}"
 
 echo "OK metrics -> $MET patch -> $PATCH"

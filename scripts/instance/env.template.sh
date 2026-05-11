@@ -3,6 +3,10 @@
 
 export CUDA_VISIBLE_DEVICES="${CUDA_VISIBLE_DEVICES:-0}"
 
+# For eval: use MMDet venv so numpy/pycocotools exist, e.g.
+#   source /workspace/venv-mmlab/bin/activate
+#   or: export PYTHON=/workspace/venv-mmlab/bin/python3
+
 # CrowdHuman source (official layout): Images/*.jpg + annotation_val.odgt
 export CROWDHUMAN_ROOT="${CROWDHUMAN_ROOT:-/workspace/data/crowdhuman}"
 
