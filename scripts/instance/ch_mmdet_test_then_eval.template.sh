@@ -57,9 +57,11 @@ dump_bbox_json() {
       val_dataloader.dataset.ann_file="$VAL_JSON" \
       val_dataloader.dataset.data_prefix.img="${CH_IMG_PREFIX}/" \
       test_evaluator.type=CocoMetric \
+      test_evaluator.ann_file="$VAL_JSON" \
       test_evaluator.format_only=True \
       test_evaluator.outfile_prefix="$out_prefix" \
       val_evaluator.type=CocoMetric \
+      val_evaluator.ann_file="$VAL_JSON" \
       val_evaluator.format_only=True \
       val_evaluator.outfile_prefix="$out_prefix" )
   local dt="${out_prefix}.bbox.json"
