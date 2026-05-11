@@ -284,7 +284,12 @@ def main() -> None:
     if not gt_path.is_file():
         raise SystemExit(f"GT not found: {gt_path}")
     if not dt_path.is_file():
-        raise SystemExit(f"DT not found: {dt_path}")
+        raise SystemExit(
+            f"DT not found: {dt_path}\n"
+            "Pass the real MMDet / mmcv dump path (often under work_dirs/…/*.bbox.json).\n"
+            "Search on the box:  find /workspace -name '*.bbox.json' 2>/dev/null | head -30\n"
+            "If empty, run tools/test.py (or your wrapper) to generate predictions first."
+        )
 
     raw_dt = json.loads(dt_path.read_text(encoding="utf-8"))
     if isinstance(raw_dt, dict) and "annotations" in raw_dt:
