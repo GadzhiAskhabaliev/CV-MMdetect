@@ -1,0 +1,90 @@
+== eval_coco_predictions (ssd_crowdhuman_val) -> patch_ssd_crowdhuman_val.json ==
+[eval_coco_predictions] GT images: 4370, images with >=1 detection in DT: 4370, detections: 873803
+Running per image evaluation...
+Evaluate annotation type *bbox*
+DONE (t=209.63s).
+Accumulating evaluation results...
+DONE (t=4.35s).
+Average Precision  (AP) @[ IoU=0.50:0.95 | area=all | maxDets=100 ] = 0.096
+Average Precision  (AP) @[ IoU=0.50      | area=all | maxDets=100 ] = 0.287
+Average Precision  (AP) @[ IoU=0.75      | area=all | maxDets=100 ] = 0.047
+Average Recall     (AR) @[ IoU=0.50:0.95 | area=all | maxDets=100 ] = 0.181
+{
+  "AP25": 0.597575,
+  "AP50": 0.287404,
+  "AP75": 0.047252,
+  "AP50-95": 0.096474,
+  "recall": 0.180983,
+  "coco_ar_iou25": 0.780059,
+  "coco_precision_r50_iou25": 0.738666,
+  "coco_fdr_r50_iou25": 0.261334,
+  "coco_ar_iou50": 0.463445,
+  "coco_precision_r50_iou50": 0.0,
+  "coco_fdr_r50_iou50": 1.0,
+  "coco_ar_iou75": 0.11762,
+  "coco_precision_r50_iou75": 0.0,
+  "coco_fdr_r50_iou75": 1.0,
+  "precision_iou25": 0.893029,
+  "recall_iou25": 0.218022,
+  "fdr_iou25": 0.106971,
+  "precision_iou50": 0.71318,
+  "recall_iou50": 0.174114,
+  "fdr_iou50": 0.28682,
+  "precision_iou75": 0.304154,
+  "recall_iou75": 0.074255,
+  "fdr_iou75": 0.695846,
+  "precision": 0.71318,
+  "fdr": 0.28682
+}
+Wrote /workspace/artifacts/metrics_ssd_crowdhuman_val.json
+Wrote /workspace/artifacts/patch_ssd_crowdhuman_val.json
+
+== eval_coco_predictions (fcos_crowdhuman_val) -> patch_fcos_crowdhuman_val.json ==
+[eval_coco_predictions] GT images: 4370, images with >=1 detection in DT: 4370, detections: 436883
+Running per image evaluation...
+Evaluate annotation type *bbox*
+DONE (t=204.23s).
+Accumulating evaluation results...
+DONE (t=4.68s).
+Average Precision  (AP) @[ IoU=0.50:0.95 | area=all | maxDets=100 ] = 0.144
+Average Precision  (AP) @[ IoU=0.50      | area=all | maxDets=100 ] = 0.328
+Average Precision  (AP) @[ IoU=0.75      | area=all | maxDets=100 ] = 0.111
+Average Recall     (AR) @[ IoU=0.50:0.95 | area=all | maxDets=100 ] = 0.294
+{
+  "AP25": 0.542478,
+  "AP50": 0.328401,
+  "AP75": 0.110847,
+  "AP50-95": 0.144016,
+  "recall": 0.293753,
+  "coco_ar_iou25": 0.802425,
+  "coco_precision_r50_iou25": 0.644647,
+  "coco_fdr_r50_iou25": 0.355353,
+  "coco_ar_iou50": 0.589861,
+  "coco_precision_r50_iou50": 0.299518,
+  "coco_fdr_r50_iou50": 0.700482,
+  "coco_ar_iou75": 0.256672,
+  "coco_precision_r50_iou75": 0.0,
+  "coco_fdr_r50_iou75": 1.0,
+  "precision_iou25": 0.876182,
+  "recall_iou25": 0.095958,
+  "fdr_iou25": 0.123818,
+  "precision_iou50": 0.771363,
+  "recall_iou50": 0.084478,
+  "fdr_iou50": 0.228637,
+  "precision_iou75": 0.557871,
+  "recall_iou75": 0.061097,
+  "fdr_iou75": 0.442129,
+  "precision": 0.771363,
+  "fdr": 0.228637
+}
+Wrote /workspace/artifacts/metrics_fcos_crowdhuman_val.json
+Wrote /workspace/artifacts/patch_fcos_crowdhuman_val.json
+
+Done. Hand off to edge repo owner:
+  DT:       /workspace/artifacts/ssd_crowdhuman_val_dt.json
+            /workspace/artifacts/fcos_crowdhuman_val_dt.json
+  patches:  /workspace/artifacts/patch_ssd_crowdhuman_val.json
+            /workspace/artifacts/patch_fcos_crowdhuman_val.json
+  bench:    python3 scripts/bench_runner.py --merge-json results/runs/<slug>.json --patch-json <path>
+
+Source: terminal capture from instance session (Cursor terminal 7).
