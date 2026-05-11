@@ -25,6 +25,21 @@ OUT_FCOS="${OUT_FCOS:-$OUT_DIR/mmdet_dump_prefix_fcos}"
 
 export VAL_JSON OUT_DIR
 
+require_file() {
+  local path="$1" label="$2"
+  if [[ ! -f "$path" ]]; then
+    echo "Missing ${label} file: ${path}" >&2
+    echo "Candidate weights (if any) under /workspace/checkpoints:" >&2
+    ls -1 /workspace/checkpoints/*.pth 2>/dev/null | head -50 >&2 || true
+    exit 1
+  fi
+}
+
+require_file "$SSD_CONFIG" "SSD_CONFIG"
+require_file "$SSD_CKPT" "SSD_CKPT"
+require_file "$FCOS_CONFIG" "FCOS_CONFIG"
+require_file "$FCOS_CKPT" "FCOS_CKPT"
+
 write_patch_notes() {
   local model_name="$1" cfg="$2" ckpt="$3" dt_json="$4" dump_prefix="$5" work_sub="$6"
   cat <<EOF
