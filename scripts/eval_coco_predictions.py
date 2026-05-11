@@ -260,6 +260,13 @@ def main() -> None:
         help="Patch JSON for bench_runner --merge-json: {metrics, notes}",
     )
     p.add_argument(
+        "--patch-note",
+        action="append",
+        default=None,
+        metavar="STR",
+        help="Extra line in patch notes (repeatable): config, ckpt, dump command, NMS, FPS, etc.",
+    )
+    p.add_argument(
         "--quiet-summarize",
         action="store_true",
         help="Do not print default pycocotools summarize() block",
@@ -400,17 +407,16 @@ def main() -> None:
         print(f"Wrote {args.out_metrics_json}", file=sys.stderr)
 
     if args.out_patch_json:
-        patch = {
-            "metrics": metrics,
-            "notes": [
-                "Quality: scripts/eval_coco_predictions.py — COCOeval bbox on "
-                "--gt-json/--dt-json; recall=COCO AR maxDets=100 IoU=0.50:0.95; "
-                "coco_ar_iou25/50/75 + coco_precision_r*_iou* + coco_fdr_* from official "
-                f"pycocotools tensors (PR recall grid={pr_r}); AP25 extra eval IoU=[0.25]; "
-                f"greedy P/R/FDR score>={args.precision_score_thr}, IoUs {greedy_ious}; "
-                f"legacy precision/fdr greedy @ IoU={args.precision_iou_thr}."
-            ],
-        }
+        base_notes = [
+            "Quality: scripts/eval_coco_predictions.py — COCOeval bbox on "
+            "--gt-json/--dt-json; recall=COCO AR maxDets=100 IoU=0.50:0.95; "
+            "coco_ar_iou25/50/75 + coco_precision_r*_iou* + coco_fdr_* from official "
+            f"pycocotools tensors (PR recall grid={pr_r}); AP25 extra eval IoU=[0.25]; "
+            f"greedy P/R/FDR score>={args.precision_score_thr}, IoUs {greedy_ious}; "
+            f"legacy precision/fdr greedy @ IoU={args.precision_iou_thr}."
+        ]
+        extra = [str(x) for x in (args.patch_note or ()) if str(x).strip()]
+        patch = {"metrics": metrics, "notes": base_notes + extra}
         args.out_patch_json.parent.mkdir(parents=True, exist_ok=True)
         args.out_patch_json.write_text(
             json.dumps(patch, indent=2) + "\n", encoding="utf-8"

@@ -7,7 +7,8 @@ export CUDA_VISIBLE_DEVICES="${CUDA_VISIBLE_DEVICES:-0}"
 #   source /workspace/venv-mmlab/bin/activate
 #   or: export PYTHON=/workspace/venv-mmlab/bin/python3
 #
-# Full CrowdHuman val pipeline (SSD + FCOS → dump → our eval):
+# Full CrowdHuman val pipeline (SSD + FCOS → dump → eval → edge handoff):
+#   docs/crowdhuman_study_deliverable.md
 #   scripts/instance/ch_mmdet_test_then_eval.template.sh
 #   export SSD_CONFIG SSD_CKPT FCOS_CONFIG FCOS_CKPT
 

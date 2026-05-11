@@ -12,6 +12,8 @@ set -euo pipefail
 # This script auto-picks that path if it exists and PYTHON is unset.
 #
 # Optional: EVAL_PY=/path/to/other/eval_coco_predictions.py
+# Optional: METRICS_JSON=... PATCH_JSON=... (override default OUT_DIR/metrics_<tag>.json)
+# Optional: EVAL_PATCH_NOTE_LINES=/path/to.txt — non-empty, non-# lines → repeated --patch-note
 # DT JSON: list of {image_id, category_id, bbox [xywh], score} or {"annotations":[...]}.
 
 VAL_JSON="${VAL_JSON:?Set VAL_JSON or source env.template.sh}"
@@ -33,8 +35,8 @@ OUT_DIR="${OUT_DIR:-/tmp}"
 DT_JSON="$1"
 TAG="${2:-model}"
 
-MET="$OUT_DIR/metrics_${TAG}.json"
-PATCH="$OUT_DIR/patch_${TAG}.json"
+MET="${METRICS_JSON:-$OUT_DIR/metrics_${TAG}.json}"
+PATCH="${PATCH_JSON:-$OUT_DIR/patch_${TAG}.json}"
 
 ARGS=(
   --gt-json "$VAL_JSON"
@@ -47,6 +49,14 @@ ARGS=(
 )
 
 ARGS+=(--greedy-iou-thrs "${GREEDY_IOU_THRS:-0.25,0.5,0.75}" --coco-pr-recall "${COCO_PR_RECALL:-0.5}")
+
+if [[ -n "${EVAL_PATCH_NOTE_LINES:-}" && -f "$EVAL_PATCH_NOTE_LINES" ]]; then
+  while IFS= read -r line || [[ -n "${line:-}" ]]; do
+    [[ -z "${line// }" ]] && continue
+    [[ "$line" =~ ^[[:space:]]*# ]] && continue
+    ARGS+=(--patch-note "$line")
+  done < "$EVAL_PATCH_NOTE_LINES"
+fi
 
 if [[ -z "${PYTHON:-}" ]] && [[ -x /workspace/venv-mmlab/bin/python3 ]]; then
   PYTHON=/workspace/venv-mmlab/bin/python3
