@@ -16,9 +16,24 @@ set -euo pipefail
 : "${OUT_DIR:=/workspace/artifacts}"
 
 SSD_CONFIG="${SSD_CONFIG:?export SSD_CONFIG=.../configs/ssd/....py}"
-SSD_CKPT="${SSD_CKPT:?export SSD_CKPT=.../ssd300_*.pth}"
 FCOS_CONFIG="${FCOS_CONFIG:?export FCOS_CONFIG=.../configs/fcos/....py}"
-FCOS_CKPT="${FCOS_CKPT:?export FCOS_CKPT=.../fcos_*.pth}"
+
+# Auto-pick checkpoints if user didn't set them (best-effort).
+# If your weights don't match *ssd*/*fcos* in filename, set SSD_CKPT/FCOS_CKPT explicitly.
+if [[ -z "${SSD_CKPT:-}" ]]; then
+  auto_ssd="$(ls -t /workspace/checkpoints/*ssd*.pth 2>/dev/null | head -1 || true)"
+  if [[ -n "$auto_ssd" ]]; then
+    SSD_CKPT="$auto_ssd"
+    echo "Auto SSD_CKPT=$SSD_CKPT" >&2
+  fi
+fi
+if [[ -z "${FCOS_CKPT:-}" ]]; then
+  auto_fcos="$(ls -t /workspace/checkpoints/*fcos*.pth 2>/dev/null | head -1 || true)"
+  if [[ -n "$auto_fcos" ]]; then
+    FCOS_CKPT="$auto_fcos"
+    echo "Auto FCOS_CKPT=$FCOS_CKPT" >&2
+  fi
+fi
 
 OUT_SSD="${OUT_SSD:-$OUT_DIR/mmdet_dump_prefix_ssd}"
 OUT_FCOS="${OUT_FCOS:-$OUT_DIR/mmdet_dump_prefix_fcos}"
