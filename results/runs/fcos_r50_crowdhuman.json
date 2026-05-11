@@ -1,0 +1,17 @@
+{
+  "model": "fcos_r50_crowdhuman",
+  "weights": "/workspace/repos/mmdetection/fcos_r50_caffe_fpn_gn-head_1x_coco-821213aa.pth",
+  "weights_hub": "",
+  "date": "2026-05-11T00:00:00Z",
+  "hardware": "TBD",
+  "batch_size": 1,
+  "imgsz": 640,
+  "metrics": {},
+  "tracking": {},
+  "tensorrt": {
+    "engine_exists": false,
+    "fps_fp16": null
+  },
+  "notes": [],
+  "backend": "mmdet"
+}

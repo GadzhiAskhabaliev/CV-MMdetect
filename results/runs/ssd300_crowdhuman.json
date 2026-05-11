@@ -1,0 +1,17 @@
+{
+  "model": "ssd300_crowdhuman",
+  "weights": "/workspace/repos/mmdetection/ssd300_coco_20210803_015428-d231a06e.pth",
+  "weights_hub": "",
+  "date": "2026-05-11T00:00:00Z",
+  "hardware": "TBD",
+  "batch_size": 1,
+  "imgsz": 640,
+  "metrics": {},
+  "tracking": {},
+  "tensorrt": {
+    "engine_exists": false,
+    "fps_fp16": null
+  },
+  "notes": [],
+  "backend": "mmdet"
+}
