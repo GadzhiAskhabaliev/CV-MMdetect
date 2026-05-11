@@ -107,7 +107,7 @@ dump_bbox_json() {
       val_evaluator.type=CocoMetric \
       val_evaluator.ann_file="$VAL_JSON" \
       val_evaluator.format_only=True \
-      val_evaluator.outfile_prefix="$out_prefix" )
+      val_evaluator.outfile_prefix="$out_prefix" ) >&2
   local dt="${out_prefix}.bbox.json"
   if [[ ! -f "$dt" ]]; then
     echo "Missing: $dt" >&2
