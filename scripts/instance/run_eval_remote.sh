@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 # COCOeval: uses CV-MMdetect scripts/eval_coco_predictions.py (pycocotools). No study clone required.
-# Inference first: see scripts/instance/ch_mmdet_test_then_eval.template.sh (MMDet test.py → *.bbox.json).
+# Inference first: scripts/instance/ch_mmdet_test_then_eval.template.sh
+#   runs SSD + FCOS (tools/test.py) then eval for both.
 #
 #   export VAL_JSON=... OUT_DIR=...
 #   bash scripts/instance/run_eval_remote.sh /abs/dt.json tag

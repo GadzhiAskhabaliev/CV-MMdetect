@@ -6,6 +6,10 @@ export CUDA_VISIBLE_DEVICES="${CUDA_VISIBLE_DEVICES:-0}"
 # For eval: use MMDet venv so numpy/pycocotools exist, e.g.
 #   source /workspace/venv-mmlab/bin/activate
 #   or: export PYTHON=/workspace/venv-mmlab/bin/python3
+#
+# Full CrowdHuman val pipeline (SSD + FCOS → dump → our eval):
+#   scripts/instance/ch_mmdet_test_then_eval.template.sh
+#   export SSD_CONFIG SSD_CKPT FCOS_CONFIG FCOS_CKPT
 
 # CrowdHuman source (official layout): Images/*.jpg + annotation_val.odgt
 export CROWDHUMAN_ROOT="${CROWDHUMAN_ROOT:-/workspace/data/crowdhuman}"
