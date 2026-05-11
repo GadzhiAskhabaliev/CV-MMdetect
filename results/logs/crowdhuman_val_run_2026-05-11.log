@@ -87,4 +87,4 @@ Done. Hand off to edge repo owner:
             /workspace/artifacts/patch_fcos_crowdhuman_val.json
   bench:    python3 scripts/bench_runner.py --merge-json results/runs/<slug>.json --patch-json <path>
 
-Source: terminal capture from instance session (Cursor terminal 7).
+Source: terminal capture from instance session (terminal).
