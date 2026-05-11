@@ -21,14 +21,28 @@ FCOS_CONFIG="${FCOS_CONFIG:?export FCOS_CONFIG=.../configs/fcos/....py}"
 # Auto-pick checkpoints if user didn't set them (best-effort).
 # If your weights don't match *ssd*/*fcos* in filename, set SSD_CKPT/FCOS_CKPT explicitly.
 if [[ -z "${SSD_CKPT:-}" ]]; then
-  auto_ssd="$(ls -t /workspace/checkpoints/*ssd*.pth 2>/dev/null | head -1 || true)"
+  auto_ssd="$("$PYTHON" - <<'PY'
+import glob, os
+paths = glob.glob("/workspace/**/*.pth", recursive=True)
+ssd = [p for p in paths if "ssd" in os.path.basename(p).lower()]
+ssd.sort(key=lambda p: os.path.getmtime(p), reverse=True)
+print(ssd[0] if ssd else "")
+PY
+  )"
   if [[ -n "$auto_ssd" ]]; then
     SSD_CKPT="$auto_ssd"
     echo "Auto SSD_CKPT=$SSD_CKPT" >&2
   fi
 fi
 if [[ -z "${FCOS_CKPT:-}" ]]; then
-  auto_fcos="$(ls -t /workspace/checkpoints/*fcos*.pth 2>/dev/null | head -1 || true)"
+  auto_fcos="$("$PYTHON" - <<'PY'
+import glob, os
+paths = glob.glob("/workspace/**/*.pth", recursive=True)
+fcos = [p for p in paths if "fcos" in os.path.basename(p).lower()]
+fcos.sort(key=lambda p: os.path.getmtime(p), reverse=True)
+print(fcos[0] if fcos else "")
+PY
+  )"
   if [[ -n "$auto_fcos" ]]; then
     FCOS_CKPT="$auto_fcos"
     echo "Auto FCOS_CKPT=$FCOS_CKPT" >&2
@@ -42,7 +56,7 @@ export VAL_JSON OUT_DIR
 
 require_file() {
   local path="$1" label="$2"
-  if [[ ! -f "$path" ]]; then
+  if [[ -z "$path" || ! -f "$path" ]]; then
     echo "Missing ${label} file: ${path}" >&2
     echo "Candidate weights (if any) under /workspace/checkpoints:" >&2
     ls -1 /workspace/checkpoints/*.pth 2>/dev/null | head -50 >&2 || true
